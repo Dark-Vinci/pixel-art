@@ -35,9 +35,15 @@ const homeSchema = new Schema({
         required: true
     },
 
-    art: {
+    artId: {
         type:  mongoose.Schema.Types.ObjectId,
         ref: 'Art'
+    },
+
+    isPublished: {
+        type: Boolean,
+        default: false,
+        required: true
     }
 });
 
@@ -58,7 +64,7 @@ function validateHome (input) {
             .min(20)
             .max(100),
 
-        art: Joi.objectId()
+        artId: Joi.objectId()
             .required()
     });
 
@@ -81,7 +87,7 @@ function validateHomeChange (input) {
             .min(20)
             .max(100),
 
-        art: Joi.objectId()
+        artId: Joi.objectId()
     });
 
     const result = schema.validate(input);

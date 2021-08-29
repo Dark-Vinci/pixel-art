@@ -29,6 +29,12 @@ const adminSchema = new Schema({
         type: String,
         required: true,
         maxlength: 1024
+    },
+
+    superAdmin: {
+        type: Boolean,
+        required: true,
+        default: false
     }
 });
 
@@ -37,12 +43,14 @@ adminSchema.methods.generateAuthToken = function () {
     const token = jwt.sign({ 
         _id: this._id, 
         username: this.username, 
-        isAdmin: true 
+        isAdmin: true,
+        superAdmin: this.superAdmin
     }, config.get('jwtPass'));
 
     return token;
 }
 
+// const Admin = mongoose.model('Admin', adminSchema);
 const Admin = mongoose.model('Admin', adminSchema);
 
 // function to validate the creation of an admin

@@ -1,113 +1,54 @@
 /* 
     MODELS, MODELSCHEMA AND VALIDATE FUNCTION FOR THE ART
  */
+
+    // module dependencies
 const mongoose = require('mongoose');
 const { Schema } = require('mongoose');
 const Joi = require('joi');
 
+// const { pixelSchema } = require('./pixel');
+
 // schema that the art model will be moddeled on
-const artSchema = new Schema({
+const artSchema = new Schema({     
     // the shape of the pixels
-    shape: {
+    name: {
         type: String,
         required: true,
-        default: 'rect',
-        enum: [ 'rect', 'circ' ]
+        minlength: 1
     },
 
-    // the size of the pixels 
-    size: {
-        type: Number,
-        min: 1,
-        max: 4,
-        default: 2,
-        set: v => v.round(),
-        enum: [ 1, 2, 3, 4 ],
-        required: true,
+    pixel: {
+        type: [ String ],
         validate: {
             validator: function (v) {
-                return Number.isInteger(v) && v < 5 && v > 0;
-            },
-            message: 'you should send an integer value'
-        }
-    },
-
-    // the dimension (height, width) of the art
-    dimension: {
-        height: {
-            type: Number,
-            required: true,
-            validate: {
-                validator: function (v) {
-                    return v && Number.isInteger(v)
-                },
-                message: 'you should send an integer value'
-            }
-        },
-
-        width: {
-            type: Number,
-            required: true,
-            validate: {
-                validator: function (v) {
-                    return v && Number.isInteger(v)
-                },
-                message: 'you should send an integer value'
+                return v && v.length > 0
             }
         }
     },
 
-    // the drawing is a type of array that embeds arrays of strings
-    pixel: {
-        type: [
-            {
-                type: [ String ]
-            }
-        ]
+    createdAt: {
+        type: Date,
+        required: true,
+        default: Date.now
     }
 });
 
 // compiling the art schema into a drawing model
 const Art = mongoose.model('Art', artSchema);
 
+// function to validate the creation of an artwork
 function validateArt (input) {
     // creating the dimension schema
-    const dimensionSchema = Joi.object({
-        height: Joi.number()
-            .integer()
-            .required()
-            .min(50)
-            .max(100),
-
-        width: Joi.number()
-            .integer()
-            .required()
-            .min(50)
-            .max(100)
-    });
     
     // creating the pixel schema
-    const pixelSchema = Joi.array().items(
-        Joi.array().items(
-            Joi.string()
-                .required()
-                .min(9)
-                .max(9)
-        )
-    );
+    const pixelSchema = Joi.array().items(Joi.string());
 
+// the real schema for this function
     const schema = Joi.object({
-        shape: Joi.string()
+        name: Joi.string()
             .required()
-            .min(4)
-            .max(4),
-
-        size: Joi.number()
-            .required()
-            .min(1)
-            .max(4),
-        
-        dimension: dimensionSchema,
+            .min(1),
 
         pixel: pixelSchema
     });
@@ -116,34 +57,8 @@ function validateArt (input) {
     return result;
 }
 
-function validateArt (input) {
-    // creating the pixel schema
-    const pixelSchema = Joi.array().items(
-        Joi.array().items(
-            Joi.string()
-                .required()
-                .min(9)
-                .max(9)
-        )
-    );
-
-    const schema = Joi.object({
-        shape: Joi.string()
-            .min(4)
-            .max(4),
-
-        size: Joi.number()
-            .min(1)
-            .max(4),
-
-        pixel: pixelSchema
-    });
-
-    const result = schema.validate(input);
-    return result;
-}
-
+// bulk export
 module.exports = {
     Art,
-    validateArt
+    validateArt,
 }

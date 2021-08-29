@@ -42,21 +42,18 @@ userSchema.methods.generateAuthToken = function () {
     const token = jwt.sign({ 
         _id: this._id, 
         username: this.username
-    }, config.get('jwtPass'));
+    }, config.get('jwtPass'), {
+        expiresIn: config.get('expiresIn')
+    });
 
     return token;
 }
 
-const User = mongoose.model('Admin', userSchema);
+const User = mongoose.model('User', userSchema);
 
 // function to validate the creation of a user
 function validateUser (input) {
     const schema = Joi.object({
-        username: Joi.string()
-            .required()
-            .min(2)
-            .max(50),
-
         password: Joi.string()
             .required()
             .min(7)

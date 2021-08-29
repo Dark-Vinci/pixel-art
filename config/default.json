@@ -1,4 +1,5 @@
 {
     "name": "nft_art_creator",
-    "jwtPass": ""
+    "jwtPass": "",
+    "expiresIn": "3600000"
 }

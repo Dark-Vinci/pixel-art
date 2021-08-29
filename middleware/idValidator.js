@@ -5,9 +5,9 @@ const mongoose = require('mongoose');
 
 module.exports = function (req, res, next) {
     const q = req.params;
-    const isValid = mongoose.Types.ObjectId;
+    const valid = mongoose.Types.ObjectId;
 
-    if (!isValid(q.id)) {
+    if (!valid.isValid(q.id)) {
         // invalid match
         return res.status(404).json({
             status: 404,
