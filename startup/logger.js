@@ -2,6 +2,9 @@
 
 const winston = require('winston');
 require('winston-mongodb');
+const config = require('config');
+
+const db = config.get('db');
 
 module.exports = function () {
     winston.exceptions.handle(
@@ -16,7 +19,7 @@ module.exports = function () {
     winston.add( new winston.transports.File( { filename: 'logger.log' } ) );
     winston.add( new winston.transports.Console({ prettyPrint: true, colorize: true } ) );
     winston.add( new winston.transports.MongoDB({ 
-        db: "mongodb://localhost/art",
+        db: db,
         level: 'info'
     }));
 }

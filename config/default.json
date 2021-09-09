@@ -1,5 +1,6 @@
 {
     "name": "nft_art_creator",
     "jwtPass": "",
-    "expiresIn": "3600000"
+    "expiresIn": "3600000000",
+    "db": "mongodb://localhost/arts"
 }

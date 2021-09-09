@@ -4,6 +4,8 @@ const express = require('express');
 const helmet = require('helmet');
 const morgan = require('morgan');
 const cors = require('cors');
+// ! here
+const compression = require('compression');
 
 const register = require('../route/register');
 const login = require('../route/login');
@@ -25,6 +27,8 @@ module.exports = function (app) {
         app.use(morgan('tiny'));
     }
     app.use(express.json());
+    // ! here
+    app.use(compression());
     app.use(express.urlencoded({ extended: true }));
 
     app.use('/api/register', register);

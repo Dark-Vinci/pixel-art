@@ -1,4 +1,6 @@
-{
+{   
     "name": "nft_art_creator",
-    "jwtPass": "jwtKey"
+    "jwtPass": "jwtKey",
+    "expiresIn": "expiresIn",
+    "db": "db"
 }
